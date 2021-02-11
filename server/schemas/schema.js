@@ -9,6 +9,8 @@ const {
   GraphQLList,
 } = require("graphql");
 
+const { Author, Book } = require("../models");
+
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/graphql-demo",
   {
