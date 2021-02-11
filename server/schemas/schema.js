@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const mongoose = require("mongoose");
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -7,6 +8,15 @@ const {
   GraphQLInt,
   GraphQLList,
 } = require("graphql");
+
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/graphql-demo",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+mongoose.connection.once("open", () => console.log("Connected to database."));
 
 // dummy data
 const books = [
