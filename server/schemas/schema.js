@@ -7,6 +7,7 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
 } = require("graphql");
 
 const { Author, Book } = require("../models");
@@ -23,9 +24,9 @@ mongoose.connection.once("open", () => console.log("Connected to database."));
 const AuthorType = new GraphQLObjectType({
   name: "Author",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    age: { type: GraphQLInt },
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    age: { type: new GraphQLNonNull(GraphQLInt) },
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
@@ -38,9 +39,9 @@ const AuthorType = new GraphQLObjectType({
 const BookType = new GraphQLObjectType({
   name: "Book",
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    genre: { type: GraphQLString },
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    genre: { type: new GraphQLNonNull(GraphQLString) },
     author: {
       type: AuthorType,
       resolve(parent, args) {
@@ -87,7 +88,10 @@ const Mutation = new GraphQLObjectType({
   fields: {
     addAuthor: {
       type: AuthorType,
-      args: { name: { type: GraphQLString }, age: { type: GraphQLInt } },
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
+      },
       resolve(parent, args) {
         const author = new Author(args);
         return author.save();
@@ -96,9 +100,9 @@ const Mutation = new GraphQLObjectType({
     addBook: {
       type: BookType,
       args: {
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        authorId: { type: GraphQLID },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        authorId: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
         const book = new Book(args);
