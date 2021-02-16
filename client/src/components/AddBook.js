@@ -3,6 +3,10 @@ import { useQuery } from "@apollo/client";
 import { GET_AUTHORS } from "../queries";
 
 export const AddBook = () => {
+  const nameRef = React.useRef();
+  const genreRef = React.useRef();
+  const authorRef = React.useRef();
+
   const { loading, error, data } = useQuery(GET_AUTHORS);
 
   const displayAuthors = () => {
@@ -18,24 +22,32 @@ export const AddBook = () => {
     ));
   };
 
+  const handleAddBook = (e) => {
+    e.preventDefault();
+    const name = nameRef.current.value;
+    const genre = genreRef.current.value;
+    const author = authorRef.current.value;
+    console.log(authorRef.current.value);
+  };
+
   return (
     <form id="add-book">
       <div className="field">
         <label>Book name:</label>
-        <input type="text" />
+        <input type="text" ref={nameRef} placeholder="Book name" />
       </div>
 
       <div className="field">
         <label>Genre:</label>
-        <input type="text" />
+        <input type="text" ref={genreRef} placeholder="Genre" />
       </div>
 
       <div className="field">
         <label>Author:</label>
-        <select>{displayAuthors()}</select>
+        <select ref={authorRef}>{displayAuthors()}</select>
       </div>
 
-      <button>Add Book</button>
+      <button onClick={handleAddBook}>Add Book</button>
     </form>
   );
 };
