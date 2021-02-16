@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const schema = require("./schemas/schema");
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 

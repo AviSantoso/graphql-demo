@@ -16,13 +16,14 @@ export const BookList = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  console.log(data);
+  const displayBooks = () =>
+    data.books.map((book) => <li key={book.id}>{book.name}</li>);
 
   return (
     <div>
-      <ul id="book-list">
-        <li>Book Name</li>
-      </ul>
+      <ul id="book-list">{displayBooks()}</ul>
     </div>
   );
 };
+
+export default BookList;
