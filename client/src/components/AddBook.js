@@ -17,7 +17,7 @@ export const AddBook = () => {
       return <option>Error. Please see console for details.</option>;
     }
     return data.authors.map((author) => (
-      <option key={author.id} value={author}>
+      <option key={author.id} value={author.id}>
         {author.name}
       </option>
     ));
@@ -27,9 +27,8 @@ export const AddBook = () => {
     e.preventDefault();
     const name = nameRef.current.value;
     const genre = genreRef.current.value;
-    const author = authorRef.current.value;
-    const newTodo = { name, genre, author };
-    const todo = await addTodo(newTodo);
+    const authorId = authorRef.current.value;
+    const todo = await addTodo({ variables: { name, genre, authorId } });
     console.log(`Added a new todo:`, todo);
   };
 
