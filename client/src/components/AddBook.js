@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_AUTHORS, MUTATION_ADD_BOOK } from "../queries";
+import { GET_BOOKS, GET_AUTHORS, MUTATION_ADD_BOOK } from "../queries";
 
 export const AddBook = () => {
   const nameRef = React.useRef();
@@ -8,7 +8,7 @@ export const AddBook = () => {
   const authorRef = React.useRef();
 
   const { loading, error, data } = useQuery(GET_AUTHORS);
-  const [addTodo] = useMutation(MUTATION_ADD_BOOK);
+  const [addBook] = useMutation(MUTATION_ADD_BOOK);
 
   const displayAuthors = () => {
     if (loading) return <option>Loading...</option>;
@@ -28,8 +28,12 @@ export const AddBook = () => {
     const name = nameRef.current.value;
     const genre = genreRef.current.value;
     const authorId = authorRef.current.value;
-    const todo = await addTodo({ variables: { name, genre, authorId } });
-    console.log(`Added a new todo:`, todo);
+    const { data } = await addBook({
+      variables: { name, genre, authorId },
+      refetchQueries: [{ query: GET_BOOKS }],
+    });
+
+    console.log(`Added a new book:`, data.addBook);
   };
 
   return (
